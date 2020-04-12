@@ -1,0 +1,19 @@
+{
+  "list": [
+    {
+      "id": 1,
+      "name": "佳人网早安心语",
+      "seedUrl": "http://jiaren.org/category/d_human/",
+      "expandType": "同站扩展",
+      "maxExpandDepth": 5
+    },
+    {
+      "id": 2,
+      "name": "新浪新闻新冠疫情",
+      "seedUrl": "https://news.sina.com.cn/",
+      "expandType": "同站扩展",
+      "maxExpandDepth": 2
+    }
+  ],
+  "pageTotal": 4
+}
