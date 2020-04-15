@@ -9,17 +9,14 @@ export const fetchRules = query => {
     });
 };
 
-export const fetchMatchedPages = ruleId => {
-    return axios.get('http://localhost/rule/page/' + ruleId);
-};
-
-export const fetchPageContent = page => {
+export const fetchMatchedPages = (ruleId, query) => {
     return request({
-        url: 'http://localhost/page/content',
+        url: 'http://localhost/page/rule',
         method: 'get',
         params: {
-            contentType: page.contentType,
-            id: page.id
+            ruleId: ruleId,
+            pageIndex: query.pageIndex,
+            pageSize: query.pageSize
         }
     });
 };

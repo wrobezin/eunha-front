@@ -42,11 +42,14 @@
             <div class="pagination">
                 <el-pagination
                         background
-                        layout="total, prev, pager, next"
-                        :current-page="query.pageIndex"
+                        layout="total, prev, pager, next, sizes, jumper"
+                        :pager-count="7"
+                        :current-page="query.pageIndex + 1"
+                        :page-sizes="[5, 10, 20, 50, 80, 100]"
                         :page-size="query.pageSize"
-                        :total="pageTotal"
+                        :total="2000"
                         @current-change="handlePageChange"
+                        @size-change="handleSizeChange"
                 ></el-pagination>
             </div>
 
@@ -58,7 +61,7 @@
 </template>
 
 <script>
-    import { fetchMatchedPages, fetchPageContent } from '../../api';
+    import { fetchMatchedPages } from '../../api';
 
     export default {
         name: 'documentTable',
@@ -70,11 +73,10 @@
                 snapshotVisible: false,
                 snapshotBody: '',
                 query: {
-                    pageIndex: 1,
+                    pageIndex: 0,
                     pageSize: 10
                 },
-                tableData: [],
-                pageTotal: 0
+                tableData: []
             };
         },
         created() {
@@ -85,14 +87,17 @@
         },
         methods: {
             getData() {
-                fetchMatchedPages(this.ruleId)
+                fetchMatchedPages(this.ruleId, this.query)
                     .then(res => {
-                        this.tableData = res.data;
+                        this.tableData = res;
                     });
             },
-            // 分页导航
-            handlePageChange(val) {
-                this.$set(this.query, 'pageIndex', val);
+            handlePageChange(index) {
+                this.$set(this.query, 'pageIndex', index - 1);
+                this.getData();
+            },
+            handleSizeChange(size) {
+                this.$set(this.query, 'pageSize', size);
                 this.getData();
             },
             visit(url) {
@@ -100,12 +105,8 @@
             },
             viewSnapshot(index) {
                 let page = this.tableData[index];
-                this.snapshotBody = '载入中';
+                this.snapshotBody = page.body;
                 this.snapshotVisible = true;
-                fetchPageContent(page)
-                    .then(page => {
-                        this.snapshotBody = page.body;
-                    });
             }
         }
     };

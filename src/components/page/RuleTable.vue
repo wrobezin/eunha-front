@@ -68,7 +68,7 @@
                         layout="total, prev, pager, next"
                         :current-page="query.pageIndex"
                         :page-size="query.pageSize"
-                        :total="pageTotal"
+                        :total="tableData.length"
                         @current-change="handlePageChange"
                 ></el-pagination>
             </div>
@@ -104,7 +104,6 @@
                 delList: [],
                 editVisible: false,
                 addVisible: false,
-                pageTotal: 0,
                 form: {},
                 idx: -1,
                 id: -1
@@ -128,7 +127,6 @@
                         rule['setInterest'] = isAlwaysTrue(rule['interestRule']);
                     }
                     this.tableData = res;
-                    // this.pageTotal = res.pageTotal || 50;
                 }).catch(error => {
                     this.$message.error('网络异常！');
                     console.error(error);
@@ -174,7 +172,6 @@
                 this.multipleSelection = [];
             },
             handleEdit(index) {
-                console.log(this.tableData);
                 this.form = this.tableData[index];
                 this.editVisible = true;
             },
