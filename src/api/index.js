@@ -11,13 +11,20 @@ export const fetchRules = query => {
 
 export const fetchMatchedPages = (ruleId, query) => {
     return request({
-        url: 'http://localhost/page/rule',
+        url: 'http://localhost/page/rule-matched',
         method: 'get',
         params: {
             ruleId: ruleId,
             pageIndex: query.pageIndex,
             pageSize: query.pageSize
         }
+    });
+};
+
+export const fetchMatchedPageCount = (ruleId) => {
+    return request({
+        url: 'http://localhost/page/rule-matched-count/' + ruleId,
+        method: 'get'
     });
 };
 

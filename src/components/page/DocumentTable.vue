@@ -4,8 +4,7 @@
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item>
                     <i class="el-icon-lx-cascades"></i>
-                    <span v-if="tagType === 'ruleMatching'">规则【{{ruleName}}】匹配的页面</span>
-                    <span v-else>已抓页面</span>
+                    <span>规则【{{ruleName}}】匹配的页面</span>
                 </el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -47,7 +46,7 @@
                         :current-page="query.pageIndex + 1"
                         :page-sizes="[5, 10, 20, 50, 80, 100]"
                         :page-size="query.pageSize"
-                        :total="2000"
+                        :total="dataTotal"
                         @current-change="handlePageChange"
                         @size-change="handleSizeChange"
                 ></el-pagination>
@@ -61,7 +60,7 @@
 </template>
 
 <script>
-    import { fetchMatchedPages } from '../../api';
+    import { fetchMatchedPageCount, fetchMatchedPages } from '../../api';
 
     export default {
         name: 'documentTable',
@@ -69,23 +68,30 @@
             return {
                 ruleId: '',
                 ruleName: '',
-                tagType: '',
                 snapshotVisible: false,
                 snapshotBody: '',
                 query: {
                     pageIndex: 0,
-                    pageSize: 10
+                    pageSize: 5
                 },
-                tableData: []
+                tableData: [],
+                dataTotal: 0
             };
         },
         created() {
             this.ruleId = this.$route.params.ruleId;
             this.ruleName = this.$route.params.ruleName;
             this.tagType = this.$route.params.tagType;
+            this.getCount();
             this.getData();
         },
         methods: {
+            getCount() {
+                fetchMatchedPageCount(this.ruleId)
+                    .then(count => {
+                        this.dataTotal = count;
+                    });
+            },
             getData() {
                 fetchMatchedPages(this.ruleId, this.query)
                     .then(res => {
