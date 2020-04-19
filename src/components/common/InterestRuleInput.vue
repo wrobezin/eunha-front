@@ -41,7 +41,7 @@
         name: 'InterestRuleInput',
         props: ['value'],
         methods: {
-            BLANK_ITEMES() {
+            INTEREST_BLANK_ITEMES() {
                 return [{
                     type: '',
                     logic: 'FIRST',
@@ -59,7 +59,7 @@
                 if (!this.value[i].sub || this.value[i].sub.length === 0) {
                     this.value[i].value = '';
                     this.value[i].type = '';
-                    this.$set(this.value[i], 'sub', this.BLANK_ITEMES());
+                    this.$set(this.value[i], 'sub', this.INTEREST_BLANK_ITEMES());
                 } else {
                     this.$set(this.value[i], 'sub', undefined);
                 }

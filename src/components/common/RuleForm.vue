@@ -30,6 +30,14 @@
                         <span v-else style="user-select:none;">未设置，默认对所有页面感兴趣</span>
                     </el-form-item>
                     <el-form-item>
+                        <template slot="label">
+                            <el-switch v-model="rule.setPush"></el-switch>
+                            <span>更新推送</span>
+                        </template>
+                        <push-contact-input v-if="rule.setPush" v-model="rule.pushContacts"></push-contact-input>
+                        <span v-else style="user-select:none;">未设置，默认不推送</span>
+                    </el-form-item>
+                    <el-form-item>
                         <el-button type="primary" @click="onSubmit">提交</el-button>
                         <el-button v-if="!rule.id" @click="cleanUp">清空</el-button>
                     </el-form-item>
@@ -42,8 +50,9 @@
 <script>
     import { saveRule } from '../../api';
     import InterestRuleInput from './InterestRuleInput';
+    import PushContactInput from './PushContactInput';
 
-    const ALWAYS_TRUE = function() {
+    const INTEREST_ALWAYS_TRUE = function() {
         return [{
             type: 'ALWAYS_TRUE',
             logic: 'FIRST',
@@ -51,7 +60,7 @@
         }];
     };
 
-    const BLANK_ITEMES = function() {
+    const INTEREST_BLANK_ITEMES = function() {
         return [{
             type: '',
             logic: 'FIRST',
@@ -59,9 +68,16 @@
         }];
     };
 
+    const CONTACT_BLANK_ITEMES = function() {
+        return [{
+            type: '',
+            value: ''
+        }];
+    };
+
     export default {
         name: 'ruleForm',
-        components: { InterestRuleInput },
+        components: { PushContactInput, InterestRuleInput },
         comments: {
             InterestRuleInput
         },
@@ -70,6 +86,7 @@
                 default: {
                     name: '',
                     setInterest: false,
+                    setPush: false,
                     crawlRule: {
                         seedUrl: '',
                         expandType: 'expandNonePage',
@@ -77,7 +94,8 @@
                         expandToOtherSite: false,
                         maxExpandDepth: 0
                     },
-                    interestRule: ALWAYS_TRUE()
+                    interestRule: INTEREST_ALWAYS_TRUE(),
+                    pushContacts: CONTACT_BLANK_ITEMES()
                 }
             }
         },
@@ -100,12 +118,15 @@
                 }
             },
             'rule.setInterest': function(setInterest) {
-                this.rule.interestRule = setInterest ? BLANK_ITEMES() : ALWAYS_TRUE();
+                this.rule.interestRule = setInterest ? INTEREST_BLANK_ITEMES() : INTEREST_ALWAYS_TRUE();
             },
             'rule.interestRule': function(interestRule) {
                 if (interestRule === undefined || interestRule.length === 0) {
-                    this.rule.interestRule = BLANK_ITEMES();
+                    this.rule.interestRule = INTEREST_BLANK_ITEMES();
                 }
+            },
+            'rule.setPush': function(setPush) {
+                this.rule.pushContacts = setPush ? CONTACT_BLANK_ITEMES() : [];
             }
         },
         methods: {
