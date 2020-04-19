@@ -81,7 +81,6 @@
         created() {
             this.ruleId = this.$route.params.ruleId;
             this.ruleName = this.$route.params.ruleName;
-            this.tagType = this.$route.params.tagType;
             this.getCount();
             this.getData();
         },

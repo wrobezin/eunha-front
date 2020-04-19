@@ -86,7 +86,7 @@
 </template>
 
 <script>
-    import { fetchRules, deleteRule } from '../../api/index';
+    import { deleteRule, fetchRules } from '../../api/index';
     import RuleForm from '../common/RuleForm';
 
     export default {
@@ -212,7 +212,6 @@
                 this.$router.push({
                     name: 'document-table',
                     params: {
-                        tagType: 'ruleMatching',
                         tagTitle: '已抓页面',
                         ruleName: ruleName,
                         ruleId: ruleId

@@ -50,18 +50,19 @@
 </template>
 
 <script>
-import bus from '../common/bus';
-export default {
-    data() {
-        return {
-            collapse: false,
-            items: [
-                {
-                    icon: 'el-icon-lx-home',
-                    index: 'dashboard',
-                    title: '系统首页'
-                },
-                {
+    import bus from '../common/bus';
+
+    export default {
+        data() {
+            return {
+                collapse: false,
+                items: [
+                    {
+                        icon: 'el-icon-lx-home',
+                        index: 'home',
+                        title: '系统首页'
+                    },
+                    {
                     icon: 'el-icon-lx-settings',
                     index: 'table',
                     title: '规则管理'

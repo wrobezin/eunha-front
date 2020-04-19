@@ -7,7 +7,7 @@ export default new Router({
     routes: [
         {
             path: '/',
-            redirect: '/dashboard'
+            redirect: '/home'
         },
         {
             path: '/',
@@ -15,8 +15,8 @@ export default new Router({
             meta: { title: '自述文件' },
             children: [
                 {
-                    path: '/dashboard',
-                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
+                    path: '/home',
+                    component: () => import(/* webpackChunkName: "home" */ '../components/page/HomePage.vue'),
                     meta: { title: '系统首页' }
                 },
                 {
@@ -27,8 +27,19 @@ export default new Router({
                 {
                     name: 'document-table',
                     path: '/document-table',
-                    component: () => import(/* webpackChunkName: "table" */ '../components/page/DocumentTable.vue'),
+                    component: () => import(/* webpackChunkName: "documentTable" */ '../components/page/DocumentTable.vue'),
                     meta: { title: '查询结果' }
+                },
+                {
+                    name: 'search-result',
+                    path: '/search-result',
+                    component: () => import(/* webpackChunkName: "searchResult" */ '../components/page/SearchResultList.vue'),
+                    meta: { title: '搜索结果' }
+                },
+                {
+                    path: '/dashboard',
+                    component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
+                    meta: { title: '数据面板' }
                 },
                 {
                     path: '/icon',

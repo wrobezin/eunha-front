@@ -21,10 +21,33 @@ export const fetchMatchedPages = (ruleId, query) => {
     });
 };
 
-export const fetchMatchedPageCount = (ruleId) => {
+export const fetchMatchedPageCount = ruleId => {
     return request({
         url: 'http://localhost/page/rule-matched-count/' + ruleId,
         method: 'get'
+    });
+};
+
+
+export const countByKeywords = keywords => {
+    return request({
+        url: 'http://localhost/page//keyowrd/count',
+        method: 'get',
+        params: {
+            keywords: keywords
+        }
+    });
+};
+
+export const searchByKeywords = (keywords, pageIndex, pageSize) => {
+    return request({
+        url: 'http://localhost/page//keyowrd/search',
+        method: 'get',
+        params: {
+            keywords: keywords,
+            pageIndex: pageIndex,
+            pageSize: pageSize
+        }
     });
 };
 
