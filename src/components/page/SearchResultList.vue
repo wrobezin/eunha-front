@@ -1,6 +1,25 @@
 <template>
     <div>
-        <search-result-container v-for="item in searchResult" :page="item"/>
+        <div>
+            <el-row>
+                <el-col :span="22">
+                    <el-input
+                            placeholder="请输入搜索关键词"
+                            v-model="keywords"
+                            prefix-icon="el-icon-search"
+                            clearable
+                            class="searchInput">
+                    </el-input>
+                </el-col>
+                <el-col :span="2">
+                    <el-button type="primary" style="height: 50px;width: 70px" @click="search">搜索</el-button>
+                </el-col>
+            </el-row>
+            <br>
+        </div>
+        <div>
+            <search-result-container v-for="item in searchResult" :page="item"/>
+        </div>
     </div>
 </template>
 
@@ -37,11 +56,21 @@
                     .then(result => {
                         this.searchResult = result;
                     });
+            },
+            search() {
+                this.getCount();
+                this.getData();
             }
         }
     };
 </script>
 
 <style scoped>
+    .searchInput {
+        font-size: 20px;
+    }
 
+    .searchInput >>> .el-input__inner {
+        height: 50px;
+    }
 </style>
