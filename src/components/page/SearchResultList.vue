@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>
+        <div ref="inputDiv">
             <el-row>
                 <el-col :span="22">
                     <el-input
@@ -19,6 +19,19 @@
         </div>
         <div>
             <search-result-container v-for="item in searchResult" :page="item"/>
+        </div>
+        <div class="pagination">
+            <el-pagination
+                    background
+                    layout="total, prev, pager, next, sizes, jumper"
+                    :pager-count="7"
+                    :current-page="pageIndex + 1"
+                    :page-sizes="[5, 10,15, 20]"
+                    :page-size="pageSize"
+                    :total="dataTotal"
+                    @current-change="handlePageChange"
+                    @size-change="handleSizeChange"
+            ></el-pagination>
         </div>
     </div>
 </template>
@@ -39,7 +52,7 @@
             return {
                 dataTotal: 0,
                 pageIndex: 0,
-                pageSize: 10,
+                pageSize: 5,
                 searchResult: [],
                 keywords: ''
             };
@@ -59,6 +72,16 @@
             },
             search() {
                 this.getCount();
+                this.getData();
+            },
+            handlePageChange(index) {
+                this.pageIndex = index - 1;
+                this.$refs.inputDiv.scrollIntoView();
+                this.getData();
+            },
+            handleSizeChange(size) {
+                this.pageSize = size;
+                this.$refs.inputDiv.scrollIntoView();
                 this.getData();
             }
         }
