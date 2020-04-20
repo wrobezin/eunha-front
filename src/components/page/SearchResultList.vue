@@ -71,6 +71,7 @@
                     });
             },
             search() {
+                this.pageIndex = 0;
                 this.getCount();
                 this.getData();
             },
@@ -80,6 +81,7 @@
                 this.getData();
             },
             handleSizeChange(size) {
+                // TODO 相应地改变页码
                 this.pageSize = size;
                 this.$refs.inputDiv.scrollIntoView();
                 this.getData();

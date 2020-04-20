@@ -47,7 +47,7 @@
             };
         },
         methods: {
-            viewSnapshot(index) {
+            viewSnapshot() {
                 this.snapshotBody = this.page.body;
                 this.snapshotVisible = true;
             }
