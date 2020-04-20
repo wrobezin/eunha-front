@@ -19,7 +19,10 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item v-if="rule.crawlRule.expandable" label="最大扩展深度">
-                        <el-input type="number" v-model="rule.crawlRule.maxExpandDepth"></el-input>
+                        <el-input-number controls-position="right"
+                                         :step-strictly="true"
+                                         :min="0"
+                                         v-model="rule.crawlRule.maxExpandDepth"/>
                     </el-form-item>
                     <el-form-item>
                         <template slot="label">
@@ -110,10 +113,12 @@
                     case 'expandSameSite':
                         this.rule.crawlRule.expandable = true;
                         this.rule.crawlRule.expandToOtherSite = false;
+                        this.rule.crawlRule.maxExpandDepth = 1;
                         break;
                     case 'expandAllSite':
                         this.rule.crawlRule.expandable = true;
                         this.rule.crawlRule.expandToOtherSite = true;
+                        this.rule.crawlRule.maxExpandDepth = 1;
                         break;
                 }
             },
@@ -127,6 +132,11 @@
             },
             'rule.setPush': function(setPush) {
                 this.rule.pushContacts = setPush ? CONTACT_BLANK_ITEMES() : [];
+            },
+            'rule.crawlRule.maxExpandDepth': function(depth) {
+                if (+depth === 0) {
+                    this.$set(this.rule.crawlRule, 'expandType', 'expandNonePage');
+                }
             }
         },
         methods: {
