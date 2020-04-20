@@ -9,7 +9,8 @@
                          style="font-size: 18px"
                          v-html="page.title">
                 </el-link>
-                <el-link icon="el-icon-view" :underline="false" style="padding-left: 25px">查看快照</el-link>
+                <el-link icon="el-icon-view" :underline="false" style="padding-left: 25px" @click="viewSnapshot">查看快照
+                </el-link>
             </div>
             <div class="text item">
                 <span style="padding-right: 15px;color:darkred">{{page.host}}</span>
@@ -17,6 +18,10 @@
             </div>
         </el-card>
         <br>
+
+        <el-dialog title="快照" ref="snapshotDiv" :visible.sync="snapshotVisible" width="60%">
+            <div class="snapshot" v-html="snapshotBody"></div>
+        </el-dialog>
     </div>
 </template>
 
@@ -35,7 +40,18 @@
                 }
             }
         },
-        methods: {}
+        data() {
+            return {
+                snapshotVisible: false,
+                snapshotBody: ''
+            };
+        },
+        methods: {
+            viewSnapshot(index) {
+                this.snapshotBody = this.page.body;
+                this.snapshotVisible = true;
+            }
+        }
     };
 </script>
 
@@ -47,5 +63,9 @@
 
     .el-link >>> em {
         color: red;
+    }
+
+    .snapshot >>> img {
+        max-width: 750px;
     }
 </style>

@@ -115,7 +115,6 @@
             this.getData();
         },
         methods: {
-            // 获取 easy-mock 的模拟数据
             getData() {
                 let getExpandType = this.getExpandType;
                 let isAlwaysTrue = this.isAlwaysTrue;
@@ -141,7 +140,6 @@
                     console.error(error);
                 });
             },
-            // 触发搜索按钮
             handleSearch() {
                 this.$set(this.query, 'pageIndex', 1);
                 this.getData();
@@ -157,6 +155,7 @@
                             if (res) {
                                 this.$message.success('删除成功！');
                                 this.tableData.splice(index, 1);
+                                this.getData();
                             } else {
                                 this.$message.warning('删除失败！');
                             }
