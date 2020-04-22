@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        <el-dialog title="新增" :visible.sync="addVisible" width="60%">
+        <el-dialog title="新增" :visible.sync="addVisible" width="60%" @close="getData">
             <rule-form></rule-form>
         </el-dialog>
 
@@ -125,7 +125,7 @@
                         }
                         let rule = res[i];
                         rule['crawlRule']['expandType'] = getExpandType(rule.crawlRule.expandable, rule.crawlRule.expandToOtherSite);
-                        rule['setInterest'] = isAlwaysTrue(rule['interestRule']);
+                        rule['setInterest'] = !isAlwaysTrue(rule['interestRule']);
                         rule['setPush'] = rule['pushContacts'].length > 0;
                         if (!rule['setPush']) {
                             rule['pushContacts'] = [{
@@ -210,11 +210,10 @@
                 }
             },
             isAlwaysTrue(interestRule) {
-                return interestRule !== [{
-                    type: 'ALWAYS_TRUE',
-                    logic: 'FIRST',
-                    value: ''
-                }];
+                return interestRule
+                    && interestRule.length === 1
+                    && interestRule[0].type === 'ALWAYS_TRUE'
+                    && interestRule[0].logic === 'FIRST';
             },
             routeToDocument(ruleName, ruleId) {
                 this.$router.push({

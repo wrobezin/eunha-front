@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-card class="box-card">
+        <el-card class="box-card" shadow="hover">
             <div slot="header" class="clearfix">
                 <el-link :href="page.url"
                          type="primary"

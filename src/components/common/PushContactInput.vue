@@ -3,7 +3,7 @@
         <template v-for="(item,index) in value">
             <el-select v-model="item.type" placeholder="推送方式" style="width: 120px">
                 <el-option key="EMAIL" label="邮件" value="EMAIL"></el-option>
-                <el-option key="SMS" label="短信" value="SMS"></el-option>
+<!--                <el-option key="SMS" label="短信" value="SMS"></el-option>-->
             </el-select>
             <el-input v-model="item.value" style="width: 390px"></el-input>
             <el-button-group>

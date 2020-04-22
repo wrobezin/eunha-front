@@ -21,13 +21,19 @@
                     ref="multipleTable"
                     header-cell-class-name="table-header">
                 <el-table-column prop="title" label="页面标题" align='center' min-width="75%"></el-table-column>
-                <el-table-column label="操作" align='center' min-width="15%">
+                <el-table-column label="操作" align='center' min-width="25%">
                     <template slot-scope="scope">
                         <el-button
                                 type="text"
                                 icon="el-icon-view"
                                 @click="viewSnapshot(scope.$index)"
-                        >查看快照
+                        >查看最新快照
+                        </el-button>
+                        <el-button
+                                type="text"
+                                icon="el-icon-notebook-1"
+                                @click="routeToHistory(scope.row)"
+                        >历史快照
                         </el-button>
                         <el-button
                                 type="text"
@@ -53,7 +59,7 @@
             </div>
 
             <el-dialog title="快照" ref="snapshotDiv" :visible.sync="snapshotVisible" width="60%">
-                <div v-html="snapshotBody"></div>
+                <div class="snapshot" v-html="snapshotBody"></div>
             </el-dialog>
         </div>
     </div>
@@ -112,6 +118,15 @@
                 let page = this.tableData[index];
                 this.snapshotBody = page.body;
                 this.snapshotVisible = true;
+            },
+            routeToHistory(page) {
+                this.$router.push({
+                    name: 'history-page',
+                    params: {
+                        url: page.url,
+                        title: page.title
+                    }
+                });
             }
         }
     };

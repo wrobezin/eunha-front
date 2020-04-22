@@ -37,6 +37,12 @@ export default new Router({
                     meta: { title: '搜索结果' }
                 },
                 {
+                    name: 'history-page',
+                    path: '/history-page',
+                    component: () => import(/* webpackChunkName: "searchResult" */ '../components/page/HistoryPageTable.vue'),
+                    meta: { title: '历史快照' }
+                },
+                {
                     path: '/dashboard',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
                     meta: { title: '数据面板' }

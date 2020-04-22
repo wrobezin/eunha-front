@@ -28,6 +28,27 @@ export const fetchMatchedPageCount = ruleId => {
     });
 };
 
+export const fetchDifference = (url, version1, version2) => {
+    return request({
+        url: 'http://localhost/diff',
+        method: 'get',
+        params: {
+            url: url,
+            version1: version1,
+            version2: version2
+        }
+    });
+};
+
+export const fetchHistoryPages = url => {
+    return request({
+        url: 'http://localhost/page/history',
+        method: 'get',
+        params: {
+            url: url
+        }
+    });
+};
 
 export const countByKeywords = keywords => {
     return request({
@@ -62,4 +83,3 @@ export const saveRule = rule => {
 export const deleteRule = rule => {
     return axios.delete('http://localhost/rule/' + rule.id);
 };
-

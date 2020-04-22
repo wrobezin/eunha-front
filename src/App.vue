@@ -5,6 +5,17 @@
 </template>
 <style>
     @import "./assets/css/main.css";
-    @import "./assets/css/color-dark.css";     /*深色主题*/
+    @import "./assets/css/color-dark.css";
+    /*深色主题*/
     /*@import "./assets/css/theme-green/color-green.css";   浅绿色主题*/
+    @import '../node_modules/font-awesome/css/font-awesome.css';
+
+    /*[class^="el-icon-fa"], [class*=" el-icon-fa"] {*/
+    /*    display: inline-block;*/
+    /*    font: normal normal normal 14px/1 FontAwesome!important;*/
+    /*    font-size: inherit;*/
+    /*    text-rendering: auto;*/
+    /*    -webkit-font-smoothing: antialiased;*/
+    /*    -moz-osx-font-smoothing: grayscale;*/
+    /*}*/
 </style>
