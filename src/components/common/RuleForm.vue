@@ -74,7 +74,8 @@
     const CONTACT_BLANK_ITEMES = function() {
         return [{
             type: '',
-            value: ''
+            value: '',
+            params: {}
         }];
     };
 
