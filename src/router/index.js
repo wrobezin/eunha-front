@@ -20,8 +20,8 @@ export default new Router({
                     meta: { title: '系统首页' }
                 },
                 {
-                    path: '/table',
-                    component: () => import(/* webpackChunkName: "table" */ '../components/page/RuleTable.vue'),
+                    path: '/rule-table',
+                    component: () => import(/* webpackChunkName: "ruleTable" */ '../components/page/RuleTable.vue'),
                     meta: { title: '规则管理' }
                 },
                 {
@@ -43,6 +43,11 @@ export default new Router({
                     meta: { title: '历史快照' }
                 },
                 {
+                    path: '/message-center',
+                    component: () => import(/* webpackChunkName: "messageCenter" */ '../components/page/MessageCenter.vue'),
+                    meta: { title: '消息中心' }
+                },
+                {
                     path: '/dashboard',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
                     meta: { title: '数据面板' }
@@ -51,11 +56,6 @@ export default new Router({
                     path: '/icon',
                     component: () => import(/* webpackChunkName: "icon" */ '../components/page/Icon.vue'),
                     meta: { title: '自定义图标' }
-                },
-                {
-                    path: '/tabs',
-                    component: () => import(/* webpackChunkName: "tabs" */ '../components/page/Tabs.vue'),
-                    meta: { title: 'tab选项卡' }
                 },
                 {
                     // 富文本编辑器组件

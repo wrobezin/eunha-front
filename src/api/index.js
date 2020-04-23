@@ -83,3 +83,45 @@ export const saveRule = rule => {
 export const deleteRule = rule => {
     return axios.delete('http://localhost/rule/' + rule.id);
 };
+
+export const countMessageUnRead = () => {
+    return request({
+        url: 'http://localhost/message/unread-count',
+        method: 'get'
+    });
+};
+
+export const fetchUnreadMessage = () => {
+    return request({
+        url: 'http://localhost/message/unread',
+        method: 'get'
+    });
+};
+
+export const fetchReadMessage = () => {
+    return request({
+        url: 'http://localhost/message/read',
+        method: 'get'
+    });
+};
+
+export const setMessageRead = id => {
+    return request({
+        url: 'http://localhost/message/read/' + id,
+        method: 'post'
+    });
+};
+
+export const setMessageUnread = id => {
+    return request({
+        url: 'http://localhost/message/unread/' + id,
+        method: 'post'
+    });
+};
+
+export const deleteMessage = id => {
+    return request({
+        url: 'http://localhost/message/read/' + id,
+        method: 'delete'
+    });
+};

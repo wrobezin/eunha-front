@@ -15,23 +15,24 @@
                     </el-tooltip>
                 </div>
                 <!-- 消息中心 -->
-<!--                <div class="btn-bell">-->
-<!--                    <el-tooltip-->
-<!--                            effect="dark"-->
-<!--                            :content="message?`有${message}条未读消息`:`消息中心`"-->
-<!--                            placement="bottom">-->
-<!--                        <router-link to="/tabs">-->
-<!--                            <i class="el-icon-bell"></i>-->
-<!--                        </router-link>-->
-<!--                    </el-tooltip>-->
-<!--                    <span class="btn-bell-badge" v-if="message"></span>-->
-<!--                </div>-->
+                <div class="btn-bell">
+                    <el-tooltip
+                            effect="dark"
+                            :content="message?`有${message}条未读消息`:`消息中心`"
+                            placement="bottom">
+                        <router-link to="/message-center">
+                            <i class="el-icon-bell"></i>
+                        </router-link>
+                    </el-tooltip>
+                    <span class="btn-bell-badge" v-if="message"></span>
+                </div>
             </div>
         </div>
     </div>
 </template>
 <script>
     import bus from '../common/bus';
+    import { countMessageUnRead } from '../../api/index';
 
     export default {
         data() {
@@ -41,6 +42,9 @@
                 name: 'linxin',
                 message: 0
             };
+        },
+        created() {
+            this.getMessageCount();
         },
         computed: {
             username() {
@@ -80,6 +84,11 @@
                     }
                 }
                 this.fullscreen = !this.fullscreen;
+            },
+            getMessageCount() {
+                countMessageUnRead().then(count => {
+                    this.message = count;
+                });
             }
         },
         mounted() {
