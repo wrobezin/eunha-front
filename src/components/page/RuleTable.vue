@@ -30,7 +30,15 @@
                     @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55" align="center"></el-table-column>
                 <el-table-column prop="name" label="规则名" align='center' min-width="40%"></el-table-column>
-                <el-table-column prop="crawlRule.seedUrl" label="种子URL" align='center'></el-table-column>
+                <el-table-column prop="crawlRule.seedUrl" label="种子URL" align='center'>
+                    <template slot-scope="scope">
+                        <el-button icon="el-icon-lx-forward"
+                                   type="text"
+                                   @click="visit(scope.row.crawlRule.seedUrl)">
+                            {{scope.row.crawlRule.seedUrl}}
+                        </el-button>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="crawlRule.expandType" label="扩展方式" align='center' min-width="20%">
                     <template slot-scope="scope">
                         <span>{{ getExpandTypeShowString(scope.row.crawlRule.expandType) }}</span>
@@ -42,6 +50,7 @@
                     <template slot-scope="scope">
                         <el-button
                                 type="text"
+                                class="gray"
                                 icon="el-icon-document"
                                 @click="routeToDocument(scope.row.name,scope.row.id)"
                         >查看已抓
@@ -224,6 +233,9 @@
                         ruleId: ruleId
                     }
                 });
+            },
+            visit(url) {
+                window.open(url);
             }
         }
     };
@@ -249,7 +261,11 @@
     }
 
     .red {
-        color: #ff0000;
+        color: #F56C6C;
+    }
+
+    .gray {
+        color: #909399;
     }
 
     .mr10 {
