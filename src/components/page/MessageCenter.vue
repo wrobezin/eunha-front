@@ -13,6 +13,7 @@
                             <template slot="title">
                                 <el-button size="mini" @click="handleRead(index)">标为已读</el-button>
                                 <span style="padding-left: 20px;font-weight: bolder">{{msg.title}}</span>
+                                <span style="padding-left: 20px;">{{timeString(msg.time)}}</span>
                             </template>
                             <span style="padding-left: 100px">{{msg.content}}</span>
                         </el-collapse-item>
@@ -34,6 +35,7 @@
                                 <el-button type="danger" size="mini" @click="handleDelete(index)">删除</el-button>
                                 <el-button size="mini" @click="handleUnread(index)">标为未读</el-button>
                                 <span style="padding-left: 20px;font-weight: bolder">{{msg.title}}</span>
+                                <span style="padding-left: 20px;">{{timeString(msg.time)}}</span>
                             </template>
                             <span style="padding-left: 165px">{{msg.content}}</span>
                         </el-collapse-item>
@@ -119,6 +121,17 @@
                 for (let i = 0; i < count; i++) {
                     this.handleDelete(0);
                 }
+            },
+            timeString: function(time) {
+                if (!time) {
+                    return '';
+                }
+                return time[0] + '.'
+                    + (time[1] >= 10 ? time[1] : '0' + time[1]) + '.'
+                    + (time[2] >= 10 ? time[2] : '0' + time[2]) + ' '
+                    + (time[3] >= 10 ? time[3] : '0' + time[3]) + ':'
+                    + (time[4] >= 10 ? time[4] : '0' + time[4]) + ':'
+                    + (time[5] >= 10 ? time[5] : '0' + time[5]);
             }
         }
     };

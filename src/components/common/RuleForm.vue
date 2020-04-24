@@ -24,6 +24,21 @@
                                          :min="0"
                                          v-model="rule.crawlRule.maxExpandDepth"/>
                     </el-form-item>
+                    <el-form-item v-if="rule.crawlRule.expandType!=='expandAllSite'">
+                        <template slot="label">
+                            <el-switch v-model="rule.setXPath"></el-switch>
+                            <span>XPath</span>
+                            <el-popover
+                                    placement="top-start"
+                                    width="280"
+                                    trigger="hover"
+                                    content="抓取网页后将依次从指定的XPath中获取内容，并按顺序拼接起来。不可用于全网扩展。">
+                                <i class="el-icon-question" slot="reference"/>
+                            </el-popover>
+                        </template>
+                        <string-input-group v-if="rule.setXPath" v-model="rule.crawlRule.xpath"></string-input-group>
+                        <span v-else style="user-select:none;">未设置，默认获取<strong>body</strong>标签</span>
+                    </el-form-item>
                     <el-form-item>
                         <template slot="label">
                             <el-switch v-model="rule.setInterest"></el-switch>
@@ -54,6 +69,7 @@
     import { saveRule } from '../../api';
     import InterestRuleInput from './InterestRuleInput';
     import PushContactInput from './PushContactInput';
+    import StringInputGroup from './StringInputGroup';
 
     const INTEREST_ALWAYS_TRUE = function() {
         return [{
@@ -81,25 +97,29 @@
 
     export default {
         name: 'ruleForm',
-        components: { PushContactInput, InterestRuleInput },
+        components: { StringInputGroup, PushContactInput, InterestRuleInput },
         comments: {
             InterestRuleInput
         },
         props: {
             rule: {
-                default: {
-                    name: '',
-                    setInterest: false,
-                    setPush: false,
-                    crawlRule: {
-                        seedUrl: '',
-                        expandType: 'expandNonePage',
-                        expandable: false,
-                        expandToOtherSite: false,
-                        maxExpandDepth: 0
-                    },
-                    interestRule: INTEREST_ALWAYS_TRUE(),
-                    pushContacts: CONTACT_BLANK_ITEMES()
+                default: () => {
+                    return {
+                        name: '',
+                        setInterest: false,
+                        setPush: false,
+                        setXPath: false,
+                        crawlRule: {
+                            seedUrl: '',
+                            expandType: 'expandNonePage',
+                            expandable: false,
+                            expandToOtherSite: false,
+                            xpath: [],
+                            maxExpandDepth: 0
+                        },
+                        interestRule: INTEREST_ALWAYS_TRUE(),
+                        pushContacts: CONTACT_BLANK_ITEMES()
+                    };
                 }
             }
         },
@@ -138,6 +158,9 @@
                 if (+depth === 0) {
                     this.$set(this.rule.crawlRule, 'expandType', 'expandNonePage');
                 }
+            },
+            'rule.setXPath': function(setXPath) {
+                this.rule.crawlRule.xpath = setXPath ? [''] : [];
             }
         },
         methods: {
@@ -161,6 +184,8 @@
                 this.rule.crawlRule.seedUrl = '';
                 this.rule.crawlRule.expandType = 'expandNonePage';
                 this.rule.setInterest = false;
+                this.rule.setPush = false;
+                this.rule.setXPath = false;
             }
         }
     };
