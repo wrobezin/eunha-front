@@ -77,6 +77,7 @@
         },
         created() {
             this.getUnread();
+            this.getRead();
         },
         methods: {
             getRead() {

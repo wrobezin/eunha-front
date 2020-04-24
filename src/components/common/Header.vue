@@ -20,7 +20,7 @@
                             effect="dark"
                             :content="message?`有${message}条未读消息`:`消息中心`"
                             placement="bottom">
-                        <router-link to="/message-center">
+                        <router-link to="/message-center" @click.native="cleanCount">
                             <i class="el-icon-bell"></i>
                         </router-link>
                     </el-tooltip>
@@ -39,11 +39,13 @@
             return {
                 collapse: false,
                 fullscreen: false,
-                name: 'linxin',
-                message: 0
+                name: 'yuanbug',
+                message: 0,
+                socket: null
             };
         },
         created() {
+            this.initWebSocket();
             this.getMessageCount();
         },
         computed: {
@@ -53,12 +55,10 @@
             }
         },
         methods: {
-            // 侧边栏折叠
             collapseChage() {
                 this.collapse = !this.collapse;
                 bus.$emit('collapse', this.collapse);
             },
-            // 全屏事件
             handleFullScreen() {
                 let element = document.documentElement;
                 if (this.fullscreen) {
@@ -89,6 +89,22 @@
                 countMessageUnRead().then(count => {
                     this.message = count;
                 });
+            },
+            initWebSocket() {
+                if (this.socket) {
+                    this.socket.close();
+                }
+                this.socket = new WebSocket('ws://localhost/push/ws/' + Math.random().toString(36).substr(2));
+                let getMessageCount = this.getMessageCount;
+                this.socket.onmessage = function(message) {
+                    if (message.data === 'NEW_MESSAGE_PUSH') {
+                        getMessageCount();
+                    }
+                };
+            },
+            cleanCount() {
+                console.log('fuck');
+                this.message = 0;
             }
         },
         mounted() {
