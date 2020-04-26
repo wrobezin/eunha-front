@@ -106,6 +106,29 @@
     import { deleteAllRule, deleteRule, fetchRules, fetchRulesCount } from '../../api/index';
     import RuleForm from '../common/RuleForm';
 
+    const DEFAULT_RULE = () => {
+        return {
+            name: '',
+            setInterest: false,
+            setPush: false,
+            setXPath: false,
+            crawlRule: {
+                seedUrl: '',
+                expandType: 'expandNonePage',
+                expandable: false,
+                expandToOtherSite: false,
+                xpath: [],
+                maxExpandDepth: 0
+            },
+            interestRule: [{
+                type: 'ALWAYS_TRUE',
+                logic: 'FIRST',
+                value: ''
+            }],
+            pushContacts: []
+        };
+    };
+
     export default {
         name: 'basetable',
         components: { RuleForm },
@@ -121,7 +144,7 @@
                 delList: [],
                 editVisible: false,
                 addVisible: false,
-                form: {},
+                form: DEFAULT_RULE(),
                 idx: -1,
                 id: -1,
                 totalCount: 0

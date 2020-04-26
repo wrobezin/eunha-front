@@ -67,7 +67,9 @@
             removeInterestItem(i) {
                 this.value.splice(i, 1);
                 if (i === 0) {
+                    this.addInterestItem(0);
                     this.value[0].logic = 'FIRST';
+                    console.log(this.value);
                 }
             }
         }

@@ -12,7 +12,8 @@
                         <el-input v-model="rule.crawlRule.seedUrl"></el-input>
                     </el-form-item>
                     <el-form-item label="扩展方式">
-                        <el-select v-model="rule.crawlRule.expandType" placeholder="请选择">
+                        <el-select @change="handleExpandTypeChange" v-model="rule.crawlRule.expandType"
+                                   placeholder="请选择">
                             <el-option key="expandNonePage" label="不扩展" value="expandNonePage"></el-option>
                             <el-option key="expandSameSite" label="同站扩展" value="expandSameSite"></el-option>
                             <el-option key="expandAllSite" label="全网扩展" value="expandAllSite"></el-option>
@@ -22,11 +23,12 @@
                         <el-input-number controls-position="right"
                                          :step-strictly="true"
                                          :min="0"
-                                         v-model="rule.crawlRule.maxExpandDepth"/>
+                                         v-model="rule.crawlRule.maxExpandDepth"
+                                         @change="handleMaxExpandDepthChange"/>
                     </el-form-item>
                     <el-form-item v-if="rule.crawlRule.expandType!=='expandAllSite'">
                         <template slot="label">
-                            <el-switch v-model="rule.setXPath"></el-switch>
+                            <el-switch @change="handleSetXPathChange" v-model="rule.setXPath"></el-switch>
                             <span>XPath</span>
                             <el-popover
                                     placement="top-start"
@@ -41,7 +43,7 @@
                     </el-form-item>
                     <el-form-item>
                         <template slot="label">
-                            <el-switch v-model="rule.setInterest"></el-switch>
+                            <el-switch @change="handleSetInterestChange" v-model="rule.setInterest"></el-switch>
                             <span>兴趣规则</span>
                         </template>
                         <interest-rule-input v-if="rule.setInterest" v-model="rule.interestRule"></interest-rule-input>
@@ -49,7 +51,7 @@
                     </el-form-item>
                     <el-form-item>
                         <template slot="label">
-                            <el-switch v-model="rule.setPush"></el-switch>
+                            <el-switch @change="handleSetPushChange" v-model="rule.setPush"></el-switch>
                             <span>更新推送</span>
                         </template>
                         <push-contact-input v-if="rule.setPush" v-model="rule.pushContacts"></push-contact-input>
@@ -124,7 +126,14 @@
             }
         },
         watch: {
-            'rule.crawlRule.expandType': function(type) {
+            'rule.interestRule': function(interestRule) {
+                if (interestRule === undefined || interestRule.length === 0) {
+                    this.rule.interestRule = INTEREST_BLANK_ITEMES();
+                }
+            }
+        },
+        methods: {
+            handleExpandTypeChange(type) {
                 switch (type) {
                     case 'expandNonePage':
                         this.rule.crawlRule.expandable = false;
@@ -143,27 +152,20 @@
                         break;
                 }
             },
-            'rule.setInterest': function(setInterest) {
-                this.rule.interestRule = setInterest ? INTEREST_BLANK_ITEMES() : INTEREST_ALWAYS_TRUE();
-            },
-            'rule.interestRule': function(interestRule) {
-                if (interestRule === undefined || interestRule.length === 0) {
-                    this.rule.interestRule = INTEREST_BLANK_ITEMES();
-                }
-            },
-            'rule.setPush': function(setPush) {
+            handleSetPushChange(setPush) {
                 this.rule.pushContacts = setPush ? CONTACT_BLANK_ITEMES() : [];
             },
-            'rule.crawlRule.maxExpandDepth': function(depth) {
+            handleMaxExpandDepthChange(depth) {
                 if (+depth === 0) {
                     this.$set(this.rule.crawlRule, 'expandType', 'expandNonePage');
                 }
             },
-            'rule.setXPath': function(setXPath) {
+            handleSetXPathChange(setXPath) {
                 this.rule.crawlRule.xpath = setXPath ? [''] : [];
-            }
-        },
-        methods: {
+            },
+            handleSetInterestChange(setInterest) {
+                this.rule.interestRule = setInterest ? INTEREST_BLANK_ITEMES() : INTEREST_ALWAYS_TRUE();
+            },
             onSubmit() {
                 let message = this.$message;
                 saveRule(this.rule)
