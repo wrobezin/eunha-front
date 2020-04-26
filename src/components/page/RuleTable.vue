@@ -9,17 +9,20 @@
         </div>
         <div class="container">
             <div class="handle-box">
-                <el-button type="primary" icon="el-icon-refresh-right" class="handle-del mr10"
-                           @click="getData">刷新
+                <el-button type="primary" icon="el-icon-refresh-right"
+                           @click="refresh">刷新
                 </el-button>
                 <el-button type="primary" icon="el-icon-plus" class="handle-del mr10"
                            @click="handleAdd">新增
                 </el-button>
-                <!--                <el-button type="danger" icon="el-icon-delete" class="handle-del mr10"-->
-                <!--                           @click="delAllSelection">批量删除-->
-                <!--                </el-button>-->
-                <!--                <el-input v-model="query.name" placeholder="规则名" class="handle-input mr10"></el-input>-->
-                <!--                <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>-->
+                <el-popconfirm title="是否确定删除选中的所有规则？"
+                               @onConfirm="delAllSelection">
+                    <el-button slot="reference" type="danger" icon="el-icon-delete" class="handle-del mr10">
+                        批量删除
+                    </el-button>
+                </el-popconfirm>
+                <el-input v-model="query.name" placeholder="规则名" class="handle-input mr10"></el-input>
+                <el-button type="primary" icon="el-icon-search" @click="handleSearch">搜索</el-button>
             </div>
             <el-table
                     :data="tableData"
@@ -74,11 +77,14 @@
             <div class="pagination">
                 <el-pagination
                         background
-                        layout="total, prev, pager, next"
-                        :current-page="query.pageIndex"
+                        layout="total, prev, pager, next, sizes, jumper"
+                        :pager-count="7"
+                        :current-page="query.pageIndex + 1"
+                        :page-sizes="[5, 10, 20, 50, 80, 100]"
                         :page-size="query.pageSize"
-                        :total="tableData.length"
+                        :total="totalCount"
                         @current-change="handlePageChange"
+                        @size-change="handleSizeChange"
                 ></el-pagination>
             </div>
         </div>
@@ -97,7 +103,7 @@
 <script>
     // TODO 已抓数量、上次抓取时间
 
-    import { deleteRule, fetchRules } from '../../api/index';
+    import { deleteAllRule, deleteRule, fetchRules, fetchRulesCount } from '../../api/index';
     import RuleForm from '../common/RuleForm';
 
     export default {
@@ -107,7 +113,7 @@
             return {
                 query: {
                     name: '',
-                    pageIndex: 1,
+                    pageIndex: 0,
                     pageSize: 10
                 },
                 tableData: [],
@@ -117,13 +123,20 @@
                 addVisible: false,
                 form: {},
                 idx: -1,
-                id: -1
+                id: -1,
+                totalCount: 0
             };
         },
         created() {
+            this.getCount();
             this.getData();
         },
         methods: {
+            getCount() {
+                fetchRulesCount(this.query.name).then(count => {
+                    this.totalCount = count;
+                });
+            },
             getData() {
                 let getExpandType = this.getExpandType;
                 let isAlwaysTrue = this.isAlwaysTrue;
@@ -154,7 +167,8 @@
                 });
             },
             handleSearch() {
-                this.$set(this.query, 'pageIndex', 1);
+                this.$set(this.query, 'pageIndex', 0);
+                this.getCount();
                 this.getData();
             },
             // 删除操作
@@ -172,25 +186,30 @@
                             } else {
                                 this.$message.warning('删除失败！');
                             }
-                        }).catch(function(error) {
-                        message.error('网络异常！');
-                        console.error(error);
-                    });
+                        })
+                        .catch(function(error) {
+                            message.error('网络异常！');
+                        });
                 });
             },
-            // 多选操作
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
             delAllSelection() {
-                const length = this.multipleSelection.length;
-                let str = '';
-                this.delList = this.delList.concat(this.multipleSelection);
-                for (let i = 0; i < length; i++) {
-                    str += this.multipleSelection[i].name + ' ';
+                let idList = [];
+                let message = this.$message;
+                let getData = this.getData;
+                for (let i in this.multipleSelection) {
+                    idList.push(this.multipleSelection[i].id);
                 }
-                this.$message.error(`删除了${str}`);
-                this.multipleSelection = [];
+                deleteAllRule(idList)
+                    .then(count => {
+                        message.info('成功删除' + count.data + '条');
+                        getData();
+                    })
+                    .catch(function() {
+                        message.error('网络异常！');
+                    });
             },
             handleEdit(index) {
                 this.form = this.tableData[index];
@@ -199,11 +218,16 @@
             handleAdd() {
                 this.addVisible = true;
             },
-            // 分页导航
             handlePageChange(val) {
-                this.$set(this.query, 'pageIndex', val);
+                this.$set(this.query, 'pageIndex', val - 1);
                 this.getData();
-            }, getExpandType(expandable, expandToOtherSite) {
+            },
+            handleSizeChange(size) {
+                this.$set(this.query, 'pageIndex', 0);
+                this.$set(this.query, 'pageSize', size);
+                this.getData();
+            },
+            getExpandType(expandable, expandToOtherSite) {
                 if (!expandable) {
                     return 'expandNonePage';
                 } else if (expandToOtherSite) {
@@ -240,6 +264,11 @@
             },
             visit(url) {
                 window.open(url);
+            },
+            refresh() {
+                this.$set(this.query, 'pageIndex', 0);
+                this.getCount();
+                this.getData();
             }
         }
     };

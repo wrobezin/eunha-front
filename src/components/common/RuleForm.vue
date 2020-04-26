@@ -118,7 +118,7 @@
                             maxExpandDepth: 0
                         },
                         interestRule: INTEREST_ALWAYS_TRUE(),
-                        pushContacts: CONTACT_BLANK_ITEMES()
+                        pushContacts: []
                     };
                 }
             }

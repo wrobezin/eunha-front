@@ -1,6 +1,16 @@
 import request from '../utils/request';
 import axios from 'axios';
 
+export const fetchRulesCount = name => {
+    return request({
+        url: 'http://localhost/rule/count',
+        method: 'get',
+        params: {
+            name: name
+        }
+    });
+};
+
 export const fetchRules = query => {
     return request({
         url: 'http://localhost/rule',
@@ -82,6 +92,14 @@ export const saveRule = rule => {
 
 export const deleteRule = rule => {
     return axios.delete('http://localhost/rule/' + rule.id);
+};
+
+export const deleteAllRule = ruleIdList => {
+    return axios({
+        url: 'http://localhost/rule/',
+        method: 'delete',
+        data: ruleIdList
+    });
 };
 
 export const countMessageUnRead = () => {

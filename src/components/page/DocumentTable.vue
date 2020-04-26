@@ -11,7 +11,7 @@
         <div class="container">
             <div class="handle-box">
                 <el-button type="primary" icon="el-icon-refresh-right" class="handle-del mr10"
-                           @click="getData">刷新
+                           @click="refresh">刷新
                 </el-button>
             </div>
             <el-table
@@ -108,6 +108,7 @@
                 this.getData();
             },
             handleSizeChange(size) {
+                this.$set(this.query, 'pageIndex', 0);
                 this.$set(this.query, 'pageSize', size);
                 this.getData();
             },
@@ -127,6 +128,11 @@
                         title: page.title
                     }
                 });
+            },
+            refresh() {
+                this.$set(this.query, 'pageIndex', 0);
+                this.getCount();
+                this.getData();
             }
         }
     };
