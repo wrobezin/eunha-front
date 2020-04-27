@@ -25,6 +25,7 @@ export const fetchMatchedPages = (ruleId, query) => {
         method: 'get',
         params: {
             ruleId: ruleId,
+            name: query.name,
             pageIndex: query.pageIndex,
             pageSize: query.pageSize
         }

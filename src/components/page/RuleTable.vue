@@ -170,18 +170,10 @@
                         }
                         let rule = res[i];
                         rule['crawlRule']['expandType'] = getExpandType(rule.crawlRule.expandable, rule.crawlRule.expandToOtherSite);
-                        rule['crawlRule']['setXPath'] = rule['crawlRule']['xpath'].length > 0;
-                        if (!rule['crawlRule']['setXPath']) {
-                            rule['crawlRule']['xpath'] = [''];
-                        }
+                        rule['setBodyXpath'] = rule['crawlRule']['bodyXpath'].length > 0;
+                        rule['setTitleXpath'] = !!rule['crawlRule']['titleXpath'];
                         rule['setInterest'] = !isAlwaysTrue(rule['interestRule']);
                         rule['setPush'] = rule['pushContacts'].length > 0;
-                        if (!rule['setPush']) {
-                            rule['pushContacts'] = [{
-                                type: '',
-                                value: ''
-                            }];
-                        }
                     }
                     this.tableData = res;
                 }).catch(error => {

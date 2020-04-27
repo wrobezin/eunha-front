@@ -77,6 +77,7 @@
                 snapshotVisible: false,
                 snapshotBody: '',
                 query: {
+                    name: '',
                     pageIndex: 0,
                     pageSize: 5
                 },
@@ -132,6 +133,10 @@
             refresh() {
                 this.$set(this.query, 'pageIndex', 0);
                 this.getCount();
+                this.getData();
+            },
+            handleSearch() {
+                this.$set(this.query, 'pageIndex', 0);
                 this.getData();
             }
         }

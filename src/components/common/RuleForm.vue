@@ -28,17 +28,26 @@
                     </el-form-item>
                     <el-form-item v-if="rule.crawlRule.expandType!=='expandAllSite'">
                         <template slot="label">
-                            <el-switch @change="handleSetXPathChange" v-model="rule.setXPath"></el-switch>
-                            <span>XPath</span>
+                            <el-switch @change="handleSetTitleXpathChange" v-model="rule.setTitleXpath"></el-switch>
+                            <span>标题XPath</span>
+                        </template>
+                        <el-input v-if="rule.setTitleXpath" v-model="rule.crawlRule.titleXpath"></el-input>
+                        <span v-else style="user-select:none;">未设置，默认获取<strong>title</strong>标签</span>
+                    </el-form-item>
+                    <el-form-item v-if="rule.crawlRule.expandType!=='expandAllSite'">
+                        <template slot="label">
+                            <el-switch @change="handleSetBodyXpathChange" v-model="rule.setBodyXpath"></el-switch>
+                            <span style="font-size: 11px">内容XPath</span>
                             <el-popover
                                     placement="top-start"
-                                    width="280"
+                                    width="200"
                                     trigger="hover"
-                                    content="抓取网页后将依次从指定的XPath中获取内容，并按顺序拼接起来。不可用于全网扩展。">
+                                    content="抓取网页后将依次按右边列表中的XPath截取页面内容，并依序拼接起来。不可用于全网扩展。">
                                 <i class="el-icon-question" slot="reference"/>
                             </el-popover>
                         </template>
-                        <string-input-group v-if="rule.setXPath" v-model="rule.crawlRule.xpath"></string-input-group>
+                        <string-input-group v-if="rule.setBodyXpath"
+                                            v-model="rule.crawlRule.bodyXpath"></string-input-group>
                         <span v-else style="user-select:none;">未设置，默认获取<strong>body</strong>标签</span>
                     </el-form-item>
                     <el-form-item>
@@ -110,13 +119,14 @@
                         name: '',
                         setInterest: false,
                         setPush: false,
-                        setXPath: false,
+                        setBodyXpath: false,
                         crawlRule: {
                             seedUrl: '',
                             expandType: 'expandNonePage',
                             expandable: false,
                             expandToOtherSite: false,
-                            xpath: [],
+                            titleXpath: null,
+                            bodyXpath: [],
                             maxExpandDepth: 0
                         },
                         interestRule: INTEREST_ALWAYS_TRUE(),
@@ -160,8 +170,11 @@
                     this.$set(this.rule.crawlRule, 'expandType', 'expandNonePage');
                 }
             },
-            handleSetXPathChange(setXPath) {
-                this.rule.crawlRule.xpath = setXPath ? [''] : [];
+            handleSetBodyXpathChange(setBodyXpath) {
+                this.rule.crawlRule.bodyXpath = setBodyXpath ? [''] : [];
+            },
+            handleSetTitleXpathChange(setTitleXpath) {
+                this.rule.crawlRule.titleXpath = setTitleXpath ? '' : null;
             },
             handleSetInterestChange(setInterest) {
                 this.rule.interestRule = setInterest ? INTEREST_BLANK_ITEMES() : INTEREST_ALWAYS_TRUE();
@@ -185,9 +198,15 @@
                 this.rule.name = '';
                 this.rule.crawlRule.seedUrl = '';
                 this.rule.crawlRule.expandType = 'expandNonePage';
+                this.handleExpandTypeChange('expandNonePage');
                 this.rule.setInterest = false;
+                this.handleSetInterestChange(false);
                 this.rule.setPush = false;
-                this.rule.setXPath = false;
+                this.handleSetPushChange(false);
+                this.rule.setBodyXpath = false;
+                this.handleSetBodyXpathChange(false);
+                this.rule.setTitleXpath = false;
+                this.handleSetTitleXpathChange(false);
             }
         }
     };
