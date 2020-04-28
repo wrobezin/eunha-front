@@ -63,6 +63,8 @@
                     this.value[i].type = 'ALWAYS_TRUE';
                     this.$set(this.value[i], 'sub', this.INTEREST_BLANK_ITEMES());
                 } else {
+                    this.value[i].value = '';
+                    this.value[i].type = '';
                     this.$set(this.value[i], 'sub', undefined);
                 }
             },
