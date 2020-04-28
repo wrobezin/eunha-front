@@ -21,6 +21,8 @@
                     <el-option key="CONTENT_CONTAIN" label="内容包含" value="CONTENT_CONTAIN"/>
                     <el-option key="CONTENT_NOT_CONTAIN" label="内容不含"
                                value="CONTENT_NOT_CONTAIN"/>
+                    <el-option key="URL_REGEX" label="URL正则"
+                               value="URL_REGEX"/>
                 </el-select>
                 <el-input v-if="index === 0" v-model="item.value" style="width: 390px"></el-input>
                 <el-input v-else v-model="item.value" style="width: 310px"></el-input>
@@ -58,7 +60,7 @@
             swapGroup(i) {
                 if (!this.value[i].sub || this.value[i].sub.length === 0) {
                     this.value[i].value = '';
-                    this.value[i].type = '';
+                    this.value[i].type = 'ALWAYS_TRUE';
                     this.$set(this.value[i], 'sub', this.INTEREST_BLANK_ITEMES());
                 } else {
                     this.$set(this.value[i], 'sub', undefined);
