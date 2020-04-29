@@ -4,7 +4,7 @@
             <el-select v-model="item.type" placeholder="推送方式" style="width: 120px">
                 <el-option key="EMAIL" label="邮件" value="EMAIL"></el-option>
                 <el-option key="DING_TALK" label="钉钉机器人" value="DING_TALK"></el-option>
-                <!--                <el-option key="SMS" label="短信" value="SMS"></el-option>-->
+                <el-option key="WEB_HOOK" label="WebHook" value="WEB_HOOK"></el-option>
             </el-select>
             <template v-if="item.type==='DING_TALK'">
                 <el-input v-model="item.value" style="width: 390px">

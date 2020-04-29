@@ -23,6 +23,10 @@
                                value="CONTENT_NOT_CONTAIN"/>
                     <el-option key="URL_REGEX" label="URL正则"
                                value="URL_REGEX"/>
+                    <el-option key="LONGER_THAN" label="内容长于"
+                               value="LONGER_THAN"/>
+                    <el-option key="SHORTER_THAN" label="内容短于"
+                               value="SHORTER_THAN"/>
                 </el-select>
                 <el-input v-if="index === 0" v-model="item.value" style="width: 390px"></el-input>
                 <el-input v-else v-model="item.value" style="width: 310px"></el-input>
