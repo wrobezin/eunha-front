@@ -176,4 +176,8 @@
         width: 40px;
         height: 40px;
     }
+
+    .snapshot >>> img {
+        max-width: 750px;
+    }
 </style>
