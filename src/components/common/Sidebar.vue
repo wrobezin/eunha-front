@@ -73,6 +73,11 @@
                         icon: 'el-icon-bell',
                         index: 'message-center',
                         title: '消息中心'
+                    },
+                    {
+                        icon: 'el-icon-lx-question',
+                        index: 'help',
+                        title: '使用帮助'
                     }
                 ]
             };

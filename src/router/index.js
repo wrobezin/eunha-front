@@ -48,6 +48,11 @@ export default new Router({
                     meta: { title: '消息中心' }
                 },
                 {
+                    path: '/help',
+                    component: () => import(/* webpackChunkName: "messageCenter" */ '../components/page/Help.vue'),
+                    meta: { title: '使用帮助' }
+                },
+                {
                     path: '/dashboard',
                     component: () => import(/* webpackChunkName: "dashboard" */ '../components/page/Dashboard.vue'),
                     meta: { title: '数据面板' }
